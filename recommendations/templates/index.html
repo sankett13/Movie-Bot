@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation Bot</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure the body takes at least full screen height */
+        }
+
+        /* Heading Styling */
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        /* Form Styling */
+        form {
+            margin: 20px auto;
+            max-width: 500px;
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            font-size: 1.1rem;
+            margin-right: 10px;
+            color: #333;
+        }
+
+        form input,
+        form button {
+            font-size: 1rem;
+            padding: 12px;
+            margin: 8px 0;
+            width: 100%;
+            max-width: 350px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        form input:focus,
+        form button:focus {
+            outline: none;
+            border-color: #007BFF;
+        }
+
+        form button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Results Section */
+        #results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+            flex-grow: 1; /* Ensure the content area grows to fill available space */
+        }
+
+        .movie {
+            text-align: center;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .movie img {
+            width: 100%;
+            height: 225px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .movie p {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #777;
+            font-size: 1.2rem;
+            margin-top: 30px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            form input,
+            form button {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .movie img {
+                height: 200px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            form input,
+            form button {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+
+            .movie img {
+                height: 180px;
+            }
+
+            #results {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Find your next movie</h1>
+    
+    <!-- Search by Genre Form -->
+    <form action="{% url 'recommend_by_genre' %}" method="get">
+        <label for="genre">Search by Genre:</label>
+        <input type="text" id="genre" name="genre" placeholder="Enter a genre (e.g., Action)" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Search Similar Movies Form -->
+    <form action="{% url 'recommend_by_movie' %}" method="get">
+        <label for="movie">Search Similar Movies:</label>
+        <input type="text" id="movie" name="movie" placeholder="Enter a movie title (e.g., Inception)" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Display Movie Results -->
+    <div id="results">
+        {% if movies %}
+            {% for movie in movies %}
+                <div class="movie">
+                    <img src="{{ movie.poster }}" alt="Poster for {{ movie.title }}" onerror="this.src='https://via.placeholder.com/150';">
+                    <p>{{ movie.title }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-results">No movies found. Try a different search!</div>
+        {% endif %}
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>Made by <a href="https://github.com/sankett13?tab=repositories" target="_blank">Shubham Patel</a> | 
+        <a href="https://github.com/sankett13?tab=repositories" target="_blank">GitHub</a> | 
+        <a href="https://shubham-patel.vercel.app/" target="_blank">Portfolio</a> | 
+        <a href="https://www.linkedin.com/in/shubham-patel-506a79270?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank">LinkedIn</a></p>
+        <p style="font-size: 0.9rem; color: #bbb;">This project is just for fun!</p>
+    </footer>
+    
+</body>
+</html>
